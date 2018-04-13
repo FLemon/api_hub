@@ -25,16 +25,23 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:UpdateItem
+        - dynamodb:Scan
       Resource:
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
         - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.ITEMS_TABLE}"
 
 functions:
-  users:
-    handler: users/handler.queries
+  usersGet:
+    handler: users/handler.get
+    events:
+      - http:
+          path: users
+          method: get
+          cors: true
+  usersPost:
+    handler: users/handler.post
     events:
       - http:
           path: users
