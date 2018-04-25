@@ -29,9 +29,9 @@ module.exports = new GraphQLSchema({
     name: 'RootMutationType',
     fields: {
       create: {
-        args: { email: { name: 'email', type: new GraphQLNonNull(GraphQLString) } },
+        args: { user: { type: userInputType } },
         type: userType,
-        resolve: (parent, args) => create(args.email)
+        resolve: (parent, { user }) => create(user)
       },
       update: {
         args: { user: { type: userInputType } },
